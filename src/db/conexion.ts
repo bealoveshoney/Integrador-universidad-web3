@@ -14,7 +14,7 @@ async function createDatabaseIfNotExists(){ //crear bd si no existe
         password:"",
     });
 
-    await connection.query(`CREATE DATABASE IF NOT EXISTS universidad_maqui`);
+    await connection.query(`CREATE DATABASE IF NOT EXISTS base_universidad`);
     await connection.end();
 } //hasta acá es para crear la bd si es q no existe
 
@@ -23,7 +23,7 @@ type:"mysql",
 host:"localhost",
 username:"root",
 password:"",
-database:"universidad_maqui",
+database:"base_universidad",
 entities:[Estudiante, Curso, Profesor, CursoEstudiante],
 synchronize:false, //lo puse en falso porque sino me crea la bd de nuevo
 logging:true

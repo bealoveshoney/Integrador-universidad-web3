@@ -45,5 +45,17 @@ router.route('/:id')
     .delete(estudiantesController_1.borrar)
     .put(estudiantesController_1.modificar)
     .get(estudiantesController_1.consultarUno);
+// Manejo del método POST
+router.post('/estudiantes', (req, res) => {
+    const { dni, nombre, apellido, email } = req.body;
+    // Aquí iría la lógica para agregar un nuevo estudiante
+    // Por ejemplo, podrías guardar los datos en la base de datos
+    res.send(`Estudiante ${nombre} modificado con exito.`);
+});
+router.put('/estudiantes/:id', (req, res) => {
+    const id = req.params.id;
+    // Aquí iría la lógica para actualizar el estudiante
+    res.send(`Estudiante ${id} actualizado.`);
+});
 //module.exports = route; //const manejador de rutas en javascript
 exports.default = router;

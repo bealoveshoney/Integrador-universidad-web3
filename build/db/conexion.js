@@ -26,7 +26,7 @@ function createDatabaseIfNotExists() {
             user: "root",
             password: "",
         });
-        yield connection.query(`CREATE DATABASE IF NOT EXISTS universidad_maqui`);
+        yield connection.query(`CREATE DATABASE IF NOT EXISTS base_universidad`);
         yield connection.end();
     });
 } //hasta acá es para crear la bd si es q no existe
@@ -35,7 +35,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     host: "localhost",
     username: "root",
     password: "",
-    database: "universidad_maqui",
+    database: "base_universidad",
     entities: [estudianteModel_1.Estudiante, cursoModel_1.Curso, profesorModel_1.Profesor, inscripcionModel_1.CursoEstudiante],
     synchronize: false, //lo puse en falso porque sino me crea la bd de nuevo
     logging: true

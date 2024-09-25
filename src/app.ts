@@ -7,12 +7,12 @@ import inscripcionRouter from './routes/inscripcionRoutes';
 import cursoRouter from './routes/cursosRoutes'; //importa router para modularizar las rutas
 
 import path from 'path'; //módulo: trabaja con las rutas de los archivos
-//import methodOverride from 'method-override';
+import methodOverride from 'method-override';
 
 const app=express(); //la aplicación: EL SERVIDOR WEB -> definir rutas
 
-//app.use(methodOverride('_method'));
-app.use(express.json()); //permite al servidor manerja JSON
+app.use(methodOverride('_method'));
+app.use(express.json()); //permite al servidor manejar JSON
 app.use(express.urlencoded({extended:true})); //permite usar el req
 app.use(morgan('dev'));// morgarn en modo desarrollo (legible)
 app.use(cors()); //nuestra api = reciba peticiones de todos los dominios
@@ -28,6 +28,7 @@ app.set('views', path.join(__dirname, 'public', 'views')); //ruta donde están l
 
 // Ruta a la carpeta de donde se van a sacar los recursos estáticos:
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'build', 'public')));
 //los archivos estáticos van a servir desde public
 
 
@@ -38,6 +39,7 @@ app.get('/',(req:Request,res:Response)=>{ //ruta get
        // errores: errores.array()
     });
 });
+
 
 
 

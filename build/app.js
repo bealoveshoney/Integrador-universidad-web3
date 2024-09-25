@@ -11,10 +11,10 @@ const profesoresRoutes_1 = __importDefault(require("./routes/profesoresRoutes"))
 const inscripcionRoutes_1 = __importDefault(require("./routes/inscripcionRoutes"));
 const cursosRoutes_1 = __importDefault(require("./routes/cursosRoutes")); //importa router para modularizar las rutas
 const path_1 = __importDefault(require("path")); //módulo: trabaja con las rutas de los archivos
-//import methodOverride from 'method-override';
+const method_override_1 = __importDefault(require("method-override"));
 const app = (0, express_1.default)(); //la aplicación: EL SERVIDOR WEB -> definir rutas
-//app.use(methodOverride('_method'));
-app.use(express_1.default.json()); //permite al servidor manerja JSON
+app.use((0, method_override_1.default)('_method'));
+app.use(express_1.default.json()); //permite al servidor manejar JSON
 app.use(express_1.default.urlencoded({ extended: true })); //permite usar el req
 app.use((0, morgan_1.default)('dev')); // morgarn en modo desarrollo (legible)
 app.use((0, cors_1.default)()); //nuestra api = reciba peticiones de todos los dominios
@@ -25,6 +25,7 @@ app.set('views', path_1.default.join(__dirname, 'public', 'views')); //ruta dond
 //une rutas en una sola
 // Ruta a la carpeta de donde se van a sacar los recursos estáticos:
 app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
+app.use(express_1.default.static(path_1.default.join(__dirname, '..', 'build', 'public')));
 //los archivos estáticos van a servir desde public
 app.get('/', (req, res) => {
     console.log(__dirname);
