@@ -22,6 +22,7 @@ a {
     text-decoration: none;
     padding: 20px;
     color: #007bff;
+    
 }
 
 
@@ -38,6 +39,7 @@ nav {
 
 nav .container {
     padding: 0 10px;
+    
     
 }
 
@@ -57,11 +59,13 @@ nav a:hover {
 main {
     padding: 2rem;
     background-color: #f8faf8;
+
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    
 }
 
 /* Utility classes */
@@ -89,6 +93,7 @@ main {
 .px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
+    
 }
 
 .h-16 {
@@ -146,6 +151,13 @@ main {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     
+    
+}
+
+li  {
+    list-style-type: none; /* Quita las viñetas */
+    padding: 0;            /* Quita el padding por defecto */
+    margin: 0;             /* Quita el margin por defecto */
 }
 
 /* Estilos para botones */

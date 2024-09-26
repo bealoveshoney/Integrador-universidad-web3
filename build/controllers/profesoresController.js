@@ -14,7 +14,7 @@ const express_validator_1 = require("express-validator");
 const conexion_1 = require("../db/conexion");
 const profesorModel_1 = require("../models/profesorModel"); // Asegúrate de que el modelo de Profesor esté correctamente importado
 const cursoModel_1 = require("../models/cursoModel");
-let estudiantes;
+let profesores;
 // Agregamos una función que se va a llamar validar
 /*export const validar = [
   check('dni')

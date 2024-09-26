@@ -6,7 +6,7 @@ import { Profesor } from '../models/profesorModel'; // Asegúrate de que el mode
 import { CursoEstudiante } from '../models/inscripcionModel'; // Reutilizando el modelo existente si es necesario
 import { Curso } from '../models/cursoModel';
 
-let estudiantes: Profesor[];
+let profesores: Profesor[];
 
 // Agregamos una función que se va a llamar validar
 
@@ -109,7 +109,7 @@ export const borrar = async (req: Request, res: Response): Promise<void> => {
 };  
 
 export const modificar = async (req: Request, res: Response): Promise<void> => {
-  const { dni, nombre, apellido, email, profesion, telefono } = req.body;
+   const { dni, nombre, apellido, email, profesion, telefono } = req.body;
   const profesorRepository = AppDataSource.getRepository(Profesor);
 
   try {
@@ -127,6 +127,7 @@ export const modificar = async (req: Request, res: Response): Promise<void> => {
       }
   }
 };
+
 
 export const consultar = async (req: Request, res: Response): Promise<void> => {
   try {

@@ -9,14 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.consultarInscripciones = exports.borrarInscripcion = exports.inscribir = void 0;
+exports.actualizarInscripcion = exports.modificarInscripcion = exports.calificar = exports.consultarInscripciones = exports.borrarInscripcion = exports.inscribir = void 0;
 const conexion_1 = require("../db/conexion");
 const inscripcionModel_1 = require("../models/inscripcionModel");
 const estudianteModel_1 = require("../models/estudianteModel");
 const cursoModel_1 = require("../models/cursoModel");
-//let cursoEstudiante: CursoEstudiante[];
-//let estudiantes: Estudiante[];
-//let cursos: Curso[];
+const profesorModel_1 = require("../models/profesorModel");
+let inscripcion;
 const inscribir = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { estudiante_id, curso_id, fecha } = req.body;
     try {
@@ -81,3 +80,91 @@ const consultarInscripciones = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.consultarInscripciones = consultarInscripciones;
+const calificar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { nombre, descripcion, profesor_id } = req.body;
+        const cursoRepository = conexion_1.AppDataSource.getRepository(cursoModel_1.Curso);
+        const profesorRepository = conexion_1.AppDataSource.getRepository(profesorModel_1.Profesor);
+        // Buscar el curso
+        const curso = yield cursoRepository.findOneBy({ id: parseInt(req.params.id) });
+        if (!curso) {
+            return res.status(404).send('Curso no encontrado');
+        }
+        // Buscar el profesor
+        const profesor = yield profesorRepository.findOneBy({ id: parseInt(profesor_id) });
+        if (!profesor) {
+            return res.status(404).send('Profesor no encontrado');
+        }
+        // Actualizar los campos del curso
+        curso.nombre = nombre;
+        curso.descripcion = descripcion;
+        curso.profesor = profesor;
+        // Guardar el curso actualizado
+        yield cursoRepository.save(curso);
+        // Redirigir a la lista de cursos
+        res.redirect('/cursos/listarCursos');
+    }
+    catch (error) {
+        console.error('Error al actualizar el curso:', error);
+        res.status(500).send('Error al actualizar el curso');
+    }
+});
+exports.calificar = calificar;
+const modificarInscripcion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { curso_id, estudiante_id } = req.params;
+    try {
+        const inscripcionRepository = conexion_1.AppDataSource.getRepository(inscripcionModel_1.CursoEstudiante);
+        // Buscar la inscripción específica
+        const inscripcion = yield inscripcionRepository.findOne({
+            where: {
+                curso: { id: parseInt(curso_id) },
+                estudiante: { id: parseInt(estudiante_id) }
+            },
+            relations: ['curso', 'estudiante']
+        });
+        if (!inscripcion) {
+            res.status(404).json({ mensaje: 'Inscripción no encontrada.' });
+            return;
+        }
+        // Renderizar la vista para modificar la inscripción
+        res.render('modificarInscripcion', {
+            pagina: 'Modificar Inscripción',
+            inscripcion
+        });
+    }
+    catch (error) {
+        console.error('Error al obtener la inscripción:', error);
+        res.status(500).send('Error al obtener la inscripción.');
+    }
+});
+exports.modificarInscripcion = modificarInscripcion;
+const actualizarInscripcion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { curso_id, estudiante_id } = req.params;
+    const { nota, fecha } = req.body;
+    try {
+        const inscripcionRepository = conexion_1.AppDataSource.getRepository(inscripcionModel_1.CursoEstudiante);
+        // Buscar la inscripción específica
+        const inscripcion = yield inscripcionRepository.findOne({
+            where: {
+                curso: { id: parseInt(curso_id) },
+                estudiante: { id: parseInt(estudiante_id) }
+            },
+            relations: ['curso', 'estudiante']
+        });
+        if (!inscripcion) {
+            res.status(404).json({ mensaje: 'Inscripción no encontrada.' });
+            return;
+        }
+        // Actualizar la nota y la fecha
+        inscripcion.nota = nota || inscripcion.nota;
+        inscripcion.fecha = fecha || inscripcion.fecha;
+        // Guardar los cambios
+        yield inscripcionRepository.save(inscripcion);
+        res.redirect('/inscripciones/listarInscripciones');
+    }
+    catch (error) {
+        console.error('Error al actualizar la inscripción:', error);
+        res.status(500).send('Error al actualizar la inscripción.');
+    }
+});
+exports.actualizarInscripcion = actualizarInscripcion;

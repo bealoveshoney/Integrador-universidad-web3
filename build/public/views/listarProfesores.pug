@@ -31,8 +31,8 @@ block contenido
                         td.px-6.py-4= profesor.profesion
                         td.px-6.py-4= profesor.telefono
                         td.px-6.py-4
-                            a.text-blue-500(href=`/profesores/modificarProfesor/${profesor.id}`) Editar
-                            a.text-red-500.ml-2(href="#", onclick=`eliminarProfesor('${profesor.id}')`) Eliminar
+                             a.btn.text-blue-500(href=`/profesores/modificarProfesor/${profesor.id}`) Editar
+                             a.btn.text-red-500.ml-2(href="#", onclick=`eliminarProfesor('${profesor.id}')`) Eliminar
 
 block scripts
     script.
