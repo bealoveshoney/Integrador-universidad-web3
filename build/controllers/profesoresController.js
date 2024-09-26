@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.consultarUno = exports.consultar = exports.borrar = exports.insertar = void 0;
+exports.consultarUno = exports.consultar = exports.modificar = exports.borrar = exports.insertar = void 0;
 const express_validator_1 = require("express-validator");
 const conexion_1 = require("../db/conexion");
 const profesorModel_1 = require("../models/profesorModel"); // Asegúrate de que el modelo de Profesor esté correctamente importado
@@ -110,24 +110,27 @@ const borrar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.borrar = borrar;
-/*export const modificar = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
-  const { dni, nombre, apellido, email, profesion, telefono } = req.body;
-  try {
-    const profesorRepository = AppDataSource.getRepository(Profesor);
-    const profesor = await profesorRepository.findOne({ where: { id: parseInt(id) } });
-
-    if (!profesor) {
-      return res.status(404).send('Profesor no encontrado');
+const modificar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { dni, nombre, apellido, email, profesion, telefono } = req.body;
+    const profesorRepository = conexion_1.AppDataSource.getRepository(profesorModel_1.Profesor);
+    try {
+        const elProfesor = yield profesorRepository.findOneBy({ id: parseInt(req.params.id) });
+        if (elProfesor) {
+            profesorRepository.merge(elProfesor, req.body);
+            const resultado = yield profesorRepository.save(elProfesor);
+            return res.redirect('/profesores/listarProfesores');
+        }
+        else {
+            res.status(400).json({ mensaje: 'No se ha encontrado el profesor' });
+        }
     }
-    profesorRepository.merge(profesor, { dni, nombre, apellido, email, profesion, telefono });
-    await profesorRepository.save(profesor);
-    return res.redirect('/profesores/listarProfesores');
-  } catch (error) {
-    console.error('Error al modificar el profesor:', error);
-    return res.status(500).send('Error del servidor');
-  }
-};*/
+    catch (err) {
+        if (err instanceof Error) {
+            res.status(500).send(err.message);
+        }
+    }
+});
+exports.modificar = modificar;
 const consultar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const profesorRepository = conexion_1.AppDataSource.getRepository(profesorModel_1.Profesor);

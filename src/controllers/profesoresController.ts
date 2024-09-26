@@ -108,24 +108,25 @@ export const borrar = async (req: Request, res: Response): Promise<void> => {
   }
 };  
 
-/*export const modificar = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+export const modificar = async (req: Request, res: Response): Promise<void> => {
   const { dni, nombre, apellido, email, profesion, telefono } = req.body;
-  try {
-    const profesorRepository = AppDataSource.getRepository(Profesor);
-    const profesor = await profesorRepository.findOne({ where: { id: parseInt(id) } });
+  const profesorRepository = AppDataSource.getRepository(Profesor);
 
-    if (!profesor) {
-      return res.status(404).send('Profesor no encontrado');
-    }
-    profesorRepository.merge(profesor, { dni, nombre, apellido, email, profesion, telefono });
-    await profesorRepository.save(profesor);
-    return res.redirect('/profesores/listarProfesores');
-  } catch (error) {
-    console.error('Error al modificar el profesor:', error);
-    return res.status(500).send('Error del servidor');
+  try {
+      const elProfesor = await profesorRepository.findOneBy({ id: parseInt(req.params.id) });
+      if (elProfesor) {
+          profesorRepository.merge(elProfesor, req.body);
+          const resultado = await profesorRepository.save(elProfesor);
+          return res.redirect('/profesores/listarProfesores');
+      } else {
+          res.status(400).json({ mensaje: 'No se ha encontrado el profesor' });
+      }
+  } catch (err: unknown) {
+      if (err instanceof Error) {
+          res.status(500).send(err.message);
+      }
   }
-};*/
+};
 
 export const consultar = async (req: Request, res: Response): Promise<void> => {
   try {

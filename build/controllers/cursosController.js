@@ -17,6 +17,7 @@ const profesorModel_1 = require("../models/profesorModel");
 const conexion_1 = require("../db/conexion");
 const express_validator_1 = require("express-validator");
 const inscripcionModel_1 = require("../models/inscripcionModel");
+let cursos;
 const insertar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Validación agregada
     const errores = (0, express_validator_1.validationResult)(req);
@@ -92,8 +93,22 @@ const borrar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.borrar = borrar;
 const modificar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { nombre, descripcion, profesor_id } = req.body;
     try {
-        res.send("modificar");
+        const cursoRepository = conexion_1.AppDataSource.getRepository(cursoModel_1.Curso);
+        const curso = yield cursoRepository.findOne({ where: { id: parseInt(id) } });
+        const profesorRepository = conexion_1.AppDataSource.getRepository(profesorModel_1.Profesor);
+        const profesor = yield profesorRepository.findOne({ where: { id: parseInt(id) } });
+        if (!curso) {
+            return res.status(404).send('Curso no encontrado');
+        }
+        if (!profesor) {
+            return res.status(404).send('Profesor no encontrado');
+        }
+        cursoRepository.merge(curso, { nombre, descripcion });
+        yield cursoRepository.save(curso);
+        return res.redirect('/cursos/listarCursos');
     }
     catch (err) {
         if (err instanceof Error) {

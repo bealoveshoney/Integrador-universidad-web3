@@ -9,7 +9,7 @@ import { AppDataSource } from "../db/conexion";
 import { check, validationResult } from "express-validator";
 import { CursoEstudiante } from '../models/inscripcionModel';
 
-
+let cursos: Curso[];
 
 
 export const insertar = async (req: Request, res: Response): Promise<void> => {
@@ -98,10 +98,23 @@ export const insertar = async (req: Request, res: Response): Promise<void> => {
       
 
     export const modificar= async (req:Request,res:Response) =>{
-  
+      const { id } = req.params;
+      const { nombre, descripcion, profesor_id } = req.body;
     try {
-          res.send("modificar");
-                
+      const cursoRepository = AppDataSource.getRepository(Curso);
+      const curso = await cursoRepository.findOne({ where: { id: parseInt(id) } });
+      const profesorRepository = AppDataSource.getRepository(Profesor);
+      const profesor = await profesorRepository.findOne({ where: { id: parseInt(id) } });
+          if (!curso) {
+                return res.status(404).send('Curso no encontrado');
+          }
+          if (!profesor) {
+                  return res.status(404).send('Profesor no encontrado');
+          }
+      
+                cursoRepository.merge(curso, { nombre, descripcion});
+                await cursoRepository.save(curso);
+                return res.redirect('/cursos/listarCursos');
           } catch (err) {
             if(err instanceof Error){
             res.status(500).send(err.message); 
