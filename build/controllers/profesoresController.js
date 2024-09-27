@@ -14,7 +14,7 @@ const express_validator_1 = require("express-validator");
 const conexion_1 = require("../db/conexion");
 const profesorModel_1 = require("../models/profesorModel"); // Asegúrate de que el modelo de Profesor esté correctamente importado
 const cursoModel_1 = require("../models/cursoModel");
-let profesores;
+let profesor;
 // Agregamos una función que se va a llamar validar
 /*export const validar = [
   check('dni')
@@ -117,11 +117,11 @@ const modificar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const elProfesor = yield profesorRepository.findOneBy({ id: parseInt(req.params.id) });
         if (elProfesor) {
             profesorRepository.merge(elProfesor, req.body);
-            const resultado = yield profesorRepository.save(elProfesor);
+            const profesor = yield profesorRepository.save(elProfesor);
             return res.redirect('/profesores/listarProfesores');
         }
         else {
-            res.status(400).json({ mensaje: 'No se ha encontrado el profesor' });
+            res.status(400).send({ mensaje: 'No se ha encontrado el profesor' });
         }
     }
     catch (err) {

@@ -15,60 +15,11 @@ const conexion_1 = require("../db/conexion"); //llama a la conexión de la bd
 const estudianteModel_1 = require("../models/estudianteModel"); //representación de la tabla estudiantes de la bd
 const inscripcionModel_1 = require("../models/inscripcionModel");
 let estudiantes;
-//agregamos una función que se va a llamar validar
-/*export const validar = () => {
- check('dni')
- .notEmpty().withMessage('El dni es obligatorio')
- .isLength({min:7}).withMessage('El DNI debe tener al menos 7 caracteres'),
- check('nombre').notEmpty().withMessage('El Nombre es obligatorio')
- .isLength({min:3}).withMessage('El nombre debe tener al menos 3 caracteres'),
- check('apellido').notEmpty().withMessage('El apellido es obligatorio')
- .isLength({min:3}).withMessage('El apellido debe tener al menos 3 caracteres'),
- check('email').isEmail().withMessage('Debe proporcionar un email válido'),
- (req:Request,res:Response, next:NextFunction) => {
-   const errores = validationResult(req);
-   if(!errores.isEmpty()){
-     return res.render('creaEstudiantes',{
-       pagina: 'Crear Estudiante',
-       errores: errores.array()
-     });
-   }
-   next();
- }
-};*/
-/*export const validar = [
-  check('dni')
-    .notEmpty().withMessage('El dni es obligatorio')
-    .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 caracteres'),
-  check('nombre')
-    .notEmpty().withMessage('El Nombre es obligatorio')
-    .isLength({ min: 3 }).withMessage('El nombre debe tener al menos 3 caracteres'),
-  check('apellido')
-    .notEmpty().withMessage('El apellido es obligatorio')
-    .isLength({ min: 3 }).withMessage('El apellido debe tener al menos 3 caracteres'),
-  check('email')
-    .isEmail().withMessage('Debe proporcionar un email válido'),
-  (req: Request, res: Response, next: NextFunction) => {
-    const errores = validationResult(req);
-    if (!errores.isEmpty()) {
-      return res.render('crearEstudiantes', { // Asegúrate de que la vista coincida con tu archivo Pug/EJS
-        pagina: 'Crear Estudiante',
-        errores: errores.array()
-      });
-      res.status(400).json({ errores: errores.array() });
-    }
-    next();
-  }
-];*/
 const insertar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //validacion agregada 
     const errores = (0, express_validator_1.validationResult)(req);
     if (!errores.isEmpty()) {
         res.status(400).json({ errores: errores.array() });
-        /*return res.render('cargaEstudiantes', {
-            pagina: 'Crear Estudiante',
-            errores: errores.array()
-        });*/
     }
     const { dni, nombre, apellido, email } = req.body;
     try {
@@ -104,13 +55,6 @@ const insertar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.insertar = insertar;
-/* export const borrar= async (req:Request,res:Response) =>{
-       
-         try{
-          res.send("borrar");
-         }catch(err){
-           if(err instanceof Error){
-             res.status(500).send(err.message);}}}*/
 const borrar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params; // 
     try {
@@ -141,16 +85,6 @@ const borrar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.borrar = borrar;
-/*export const modificar= async (req:Request,res:Response) =>{
-
-try {
-      res.send("modificar");
-            
-      } catch (err) {
-        if(err instanceof Error){
-        res.status(500).send(err.message);
-      }}
-}*/
 const modificar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { dni, nombre, apellido, email } = req.body;
@@ -186,17 +120,6 @@ const consultar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.consultar = consultar;
-/*export const consultarUno= async (req:Request,res:Response) =>{
-
-try {
-  
-  res.send("consultar uno");
-  
-} catch (err) {
-  if(err instanceof Error){
-  res.status(500).send(err.message);
-}}
-}*/
 const consultarUno = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const idNumber = Number(id);
@@ -239,7 +162,7 @@ const buscarUnEstudiante = (idEst, res) => __awaiter(void 0, void 0, void 0, fun
     catch (err) {
         if (err instanceof Error) {
             res.render('capturaErrores', {
-                pagina: 'Error en la grabación de la infromación',
+                pagina: 'Error en la grabación de la información',
                 falla: err.message
             });
         }

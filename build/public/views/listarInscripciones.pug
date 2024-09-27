@@ -4,7 +4,7 @@ block contenido
     .flex.justify-end.mb-4
         ul.flex.space-x-4
             li 
-                a(href="/inscripciones/creaInscripciones" class="text-green-600 hover:text-green-800") Agregar Inscripción
+                a(href="/inscripciones/crearInscripcion" class="text-green-600 hover:text-green-800") Agregar Inscripción
             li 
                 a(href="/inscripciones/buscarInscripcionesxCurso" class="text-green-500 hover:text-green-800") Buscar por Curso
             li 
@@ -31,28 +31,6 @@ block contenido
                             if (estudiante.id == inscripcion.estudiante_id)
                                 td.px-6.py-4= `${estudiante.nombre} ${estudiante.apellido}`
                         td.px-6.py-4= inscripcion.nota
-                        td.px-6.py-4: a.text-blue-500(href=`/inscripciones/modificarInscripcion/${inscripcion.curso_id}/${inscripcion.estudiante_id}`) Editar inscripción
-                                      a.text-red-500.ml-2(href="/inscripciones/creaInscripciones#" onclick =`eliminarInscripcion('${inscripcion.curso_id}/${inscripcion.estudiante_id}')`) Eliminar inscripción
+                        td.px-6.py-4: a.text-blue-500(href=`/inscripciones/${inscripcion.curso.id}/${inscripcion.estudiante.id}/modificar`) Calificar
+                                      a.text-red-500.ml-2(href="#" onclick =`eliminarInscripcion('${inscripcion.curso_id}/${inscripcion.estudiante_id}')`) Eliminar inscripción
 
-block scripts
-    script.
-        function eliminarInscripcion(curso_id,estudiante_id) {
-            
-            if (confirm('¿Estás seguro de eliminar la Inscripcion?')){
-                fetch(`/inscripciones/${curso_id}`,{
-                    method: 'DELETE'
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.mensaje === 'Inscripción eliminada') {
-                        alert ('Inscripción eliminada con exito ');
-                        window.location.reload();
-                    } else {
-                        alert(data.mensaje);
-                    }
-                })
-                .catch(error =>{
-                    console.error('Error:', error);
-                    alert('Error al eliminar la inscripción');
-                })
-            }

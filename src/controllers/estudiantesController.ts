@@ -9,57 +9,6 @@ import { CursoEstudiante } from '../models/inscripcionModel';
 
 let estudiantes: Estudiante[];
 
- //agregamos una función que se va a llamar validar
-
- /*export const validar = () => {
-  check('dni')
-  .notEmpty().withMessage('El dni es obligatorio')
-  .isLength({min:7}).withMessage('El DNI debe tener al menos 7 caracteres'),
-  check('nombre').notEmpty().withMessage('El Nombre es obligatorio')
-  .isLength({min:3}).withMessage('El nombre debe tener al menos 3 caracteres'),
-  check('apellido').notEmpty().withMessage('El apellido es obligatorio')
-  .isLength({min:3}).withMessage('El apellido debe tener al menos 3 caracteres'),
-  check('email').isEmail().withMessage('Debe proporcionar un email válido'),
-  (req:Request,res:Response, next:NextFunction) => {
-    const errores = validationResult(req);
-    if(!errores.isEmpty()){
-      return res.render('creaEstudiantes',{
-        pagina: 'Crear Estudiante',
-        errores: errores.array()
-      });
-    }
-    next();
-  }
-};*/
-
-
-/*export const validar = [
-  check('dni')
-    .notEmpty().withMessage('El dni es obligatorio')
-    .isLength({ min: 7 }).withMessage('El DNI debe tener al menos 7 caracteres'),
-  check('nombre')
-    .notEmpty().withMessage('El Nombre es obligatorio')
-    .isLength({ min: 3 }).withMessage('El nombre debe tener al menos 3 caracteres'),
-  check('apellido')
-    .notEmpty().withMessage('El apellido es obligatorio')
-    .isLength({ min: 3 }).withMessage('El apellido debe tener al menos 3 caracteres'),
-  check('email')
-    .isEmail().withMessage('Debe proporcionar un email válido'),
-  (req: Request, res: Response, next: NextFunction) => {
-    const errores = validationResult(req);
-    if (!errores.isEmpty()) {
-      return res.render('crearEstudiantes', { // Asegúrate de que la vista coincida con tu archivo Pug/EJS
-        pagina: 'Crear Estudiante',
-        errores: errores.array()
-      });
-      res.status(400).json({ errores: errores.array() });
-    }
-    next();
-  }
-];*/
-
-
-    
 
     export const insertar = async (req: Request, res: Response): Promise<void> => {
       
@@ -67,10 +16,7 @@ let estudiantes: Estudiante[];
       const errores = validationResult(req);
       if (!errores.isEmpty()) {
         res.status(400).json({ errores: errores.array() });
-          /*return res.render('cargaEstudiantes', {
-              pagina: 'Crear Estudiante',
-              errores: errores.array()
-          });*/
+      
       }
       
       
@@ -112,14 +58,6 @@ let estudiantes: Estudiante[];
     
 
 
-   /* export const borrar= async (req:Request,res:Response) =>{
-          
-            try{
-             res.send("borrar");
-            }catch(err){
-              if(err instanceof Error){
-                res.status(500).send(err.message);}}}*/
-
     
                 export const borrar = async (req: Request, res: Response): Promise<void> => {
                   const { id } = req.params; // 
@@ -151,17 +89,6 @@ let estudiantes: Estudiante[];
               };            
              
       
-
-    /*export const modificar= async (req:Request,res:Response) =>{
-  
-    try {
-          res.send("modificar");
-                
-          } catch (err) {
-            if(err instanceof Error){
-            res.status(500).send(err.message); 
-          }}
-    }*/
 
           export const modificar = async (req: Request, res: Response)=> {
             const { id } = req.params; 
@@ -204,17 +131,6 @@ let estudiantes: Estudiante[];
 
      
 
-    /*export const consultarUno= async (req:Request,res:Response) =>{
-
-    try {
-      
-      res.send("consultar uno");
-      
-    } catch (err) {
-      if(err instanceof Error){
-      res.status(500).send(err.message);
-    }}
-    }*/
 
     export const consultarUno = async (req: Request, res: Response): Promise<Estudiante | null> => {
     
@@ -258,7 +174,7 @@ let estudiantes: Estudiante[];
     }catch(err:unknown){
         if(err instanceof Error){
             res.render('capturaErrores',{
-                pagina: 'Error en la grabación de la infromación',
+                pagina: 'Error en la grabación de la información',
                 falla: err.message
             });
         }

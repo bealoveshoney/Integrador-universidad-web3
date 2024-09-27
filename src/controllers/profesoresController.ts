@@ -6,7 +6,7 @@ import { Profesor } from '../models/profesorModel'; // Asegúrate de que el mode
 import { CursoEstudiante } from '../models/inscripcionModel'; // Reutilizando el modelo existente si es necesario
 import { Curso } from '../models/cursoModel';
 
-let profesores: Profesor[];
+let profesor: Profesor[];
 
 // Agregamos una función que se va a llamar validar
 
@@ -108,18 +108,20 @@ export const borrar = async (req: Request, res: Response): Promise<void> => {
   }
 };  
 
-export const modificar = async (req: Request, res: Response): Promise<void> => {
+export const modificar = async (req: Request, res: Response) => {
+ 
    const { dni, nombre, apellido, email, profesion, telefono } = req.body;
   const profesorRepository = AppDataSource.getRepository(Profesor);
 
   try {
       const elProfesor = await profesorRepository.findOneBy({ id: parseInt(req.params.id) });
+      
       if (elProfesor) {
           profesorRepository.merge(elProfesor, req.body);
-          const resultado = await profesorRepository.save(elProfesor);
+          const profesor = await profesorRepository.save(elProfesor);
           return res.redirect('/profesores/listarProfesores');
       } else {
-          res.status(400).json({ mensaje: 'No se ha encontrado el profesor' });
+          res.status(400).send({ mensaje: 'No se ha encontrado el profesor' });
       }
   } catch (err: unknown) {
       if (err instanceof Error) {
